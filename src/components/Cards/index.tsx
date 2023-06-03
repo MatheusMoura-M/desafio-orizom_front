@@ -1,14 +1,16 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, GridItem } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 interface iCardProps {
   children: ReactNode;
-  heightBig: string | number;
-  heightSmall: string | number;
-  widthBig: string | number;
-  widthSmall: string | number;
+  heightBig?: string | number;
+  heightSmall?: string | number;
+  widthBig?: string | number;
+  widthSmall?: string | number;
   opacity?: string | number;
   flexDir?: string;
+  rowSpan: number;
+  colSpan: number;
 }
 
 const CardWeather = ({
@@ -19,9 +21,14 @@ const CardWeather = ({
   widthSmall,
   opacity,
   flexDir,
+  rowSpan,
+  colSpan,
 }: iCardProps) => {
   return (
-    <Flex
+    <GridItem
+      display={"flex"}
+      rowSpan={rowSpan}
+      colSpan={colSpan}
       h={heightBig}
       w={widthBig}
       alignItems={"center"}
@@ -49,7 +56,7 @@ const CardWeather = ({
       >
         {children}
       </Flex>
-    </Flex>
+    </GridItem>
   );
 };
 

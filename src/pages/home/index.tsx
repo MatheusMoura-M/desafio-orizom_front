@@ -1,12 +1,18 @@
-import { Flex, HStack, Image, Text } from "@chakra-ui/react";
+import { Flex, Grid, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import Header from "../../components/NavBar";
 import Chuva from "../../assets/movies/chovisco.mp4";
-import IMG1 from "../../assets/movies/ceu-limpo.mp4";
-import IMG2 from "../../assets/movies/granizo.mp4";
-import IMG3 from "../../assets/movies/chuva_pesada.mp4";
-import IMG4 from "../../assets/movies/nevoa.mp4";
+import Ensolarado from "../../assets/movies/ceu-limpo.mp4";
+import Granizo from "../../assets/movies/granizo.mp4";
+import Chuva_pesada from "../../assets/movies/chuva_pesada.mp4";
+import Neve_pesada from "../../assets/movies/neve_pesada.mp4";
+import Trovoada from "../../assets/movies/trovoada.mp4";
+import Nevasca from "../../assets/movies/nevasca.mp4";
+import Nublado from "../../assets/movies/nublado.mp4";
+import Nevoa from "../../assets/movies/nevoa.mp4";
 import { useAuth } from "../../context/webContext";
 import CardWeather from "../../components/Cards";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 export const Home = () => {
   const { value } = useAuth();
@@ -20,11 +26,23 @@ export const Home = () => {
     "Sabádo",
     "Domingo",
   ];
-  const dateNumber = new Date(value.forecast?.forecastday[0].date).getDay();
-  const day = weekDays[dateNumber];
+  const newDate = new Date(value.forecast?.forecastday[0].date);
+  const dayNumber = newDate.getDay();
+  const monthNumber = newDate.getMonth() + 1;
+
+  const day = weekDays[dayNumber];
+
+  const weatherCondition = value.current?.condition.text;
+  const MovieCurrent =
+    weatherCondition == "Céu limpo"
+      ? Ensolarado
+      : weatherCondition == "Parcialmente nublado"
+      ? Nublado
+      : weatherCondition == "Neblina"
+      ? Nevoa
+      : Trovoada;
 
   console.log(value);
-
   return (
     <>
       <Header />
@@ -35,64 +53,127 @@ export const Home = () => {
         margin={"0 auto"}
         h={"100%"}
         minH={"90vh"}
+        maxH={"100vh"}
         bg={"rgb(17,77,103)"}
         bgGradient={
           "linear-gradient(90deg, rgba(17,77,103,1) 18%, rgba(30,87,176,1) 58%, rgba(54,170,177,1) 98%)"
         }
       >
-        <Flex minH={"90vh"} alignItems={"center"} justifyContent={"center"}>
+        <Flex
+          minH={"90vh"}
+          maxH={"100vh"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
           <Flex
             w={"100%"}
             alignItems={"center"}
             justifyContent={"center"}
             position={"relative"}
             minH={"90vh"}
+            maxH={"100vh"}
           >
             <Flex
               as={"video"}
-              src={Chuva}
-              // src={IMG1}
-              // src={IMG2}
-              // src={IMG3}
-              // src={IMG4}
+              src={MovieCurrent}
               minH={"90vh"}
+              maxH={"100vh"}
               h={"100%"}
               autoPlay
               muted
               loop
               objectFit={"cover"}
               position={"absolute"}
-              opacity={0.3}
+              opacity={0.5}
               w={"100%"}
               flexDir={"column"}
               alignItems={"center"}
               justifyContent={"center"}
             />
-            <Flex
-              w={"100%"}
-              minH={"90vh"}
-              flexDir={"column"}
-              gap={"2rem"}
+            <HStack
+              // position={"absolute"}
+              // top={0}
+              // left={8}
+              h={100}
+              w={"60%"}
               alignItems={"center"}
-              justifyContent={"center"}
+              justifyContent={"space-between"}
             >
-              {/* <HStack
-                h={100}
-                w={"80%"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
-              >
+              {value.location?.name && (
                 <Text
                   align={"center"}
                   color={"white"}
-                  fontSize={"32px"}
+                  fontSize={"24px"}
                   fontWeight={500}
                 >
-                  {value.location?.name} <br />
-                  {value.location?.localtime.slice(11)}
+                  Previsão de hoje (
+                  {value.forecast?.forecastday[0].date.slice(8)}/
+                  {monthNumber < 10 ? 0 + monthNumber.toString() : monthNumber})
+                  &nbsp;
+                  {value.location?.name}
+                  &nbsp;
+                  <FontAwesomeIcon icon={faLocationDot} size="1x" />
                 </Text>
-              </HStack> */}
+              )}
+            </HStack>
+            <Grid
+              minW={"100%"}
+              minH={"90vh"}
+              templateRows="repeat(2, 1fr)"
+              templateColumns="repeat(5, 1fr)"
+              maxH={"650px"}
+              flexDir={"row"}
+              // wrap={"wrap"}
+              gap={"2rem"}
+              alignItems={"flex-start"}
+              justifyContent={"center"}
+              pt={"120px"}
+            >
               <CardWeather
+                rowSpan={2}
+                colSpan={1}
+                heightBig={380}
+                heightSmall={350}
+                widthBig={320}
+                widthSmall={290}
+                opacity={0.9}
+              >
+                <VStack
+                  spacing={4}
+                  w={"100%"}
+                  h={"100%"}
+                  justifyContent={"center"}
+                >
+                  {value.forecast?.forecastday.map((elem) => {
+                    const newDate = new Date(elem.date);
+                    const dayNumber = newDate.getDay();
+                    const day = weekDays[dayNumber];
+
+                    return (
+                      <Flex
+                        key={elem.date}
+                        w={"100%"}
+                        h={"16%"}
+                        maxH={"19%"}
+                        justifyContent={"space-around"}
+                        alignItems={"center"}
+                      >
+                        <Text color={"white"} w={"35px"}>
+                          {day.slice(0, 3)}
+                        </Text>
+                        <Image src={elem.day.condition.icon} boxSize={45} />
+                        <Text color={"white"} w={90}>
+                          {elem.day.maxtemp_c + "°"} /{" "}
+                          {elem.day.mintemp_c + "°"}
+                        </Text>
+                      </Flex>
+                    );
+                  })}
+                </VStack>
+              </CardWeather>
+              <CardWeather
+                rowSpan={1}
+                colSpan={2}
                 heightBig={200}
                 widthBig={400}
                 heightSmall={180}
@@ -133,6 +214,8 @@ export const Home = () => {
                 </Flex>
               </CardWeather>
               <CardWeather
+                rowSpan={1}
+                colSpan={2}
                 heightBig={200}
                 widthBig={400}
                 heightSmall={180}
@@ -173,6 +256,8 @@ export const Home = () => {
                 </Flex>
               </CardWeather>
               <CardWeather
+                rowSpan={1}
+                colSpan={2}
                 heightBig={200}
                 widthBig={400}
                 heightSmall={180}
@@ -212,47 +297,7 @@ export const Home = () => {
                   )}
                 </Flex>
               </CardWeather>
-              <CardWeather
-                heightBig={200}
-                widthBig={400}
-                heightSmall={180}
-                widthSmall={380}
-                opacity={0.9}
-              >
-                <Flex flexDir={"column"} alignItems={"center"}>
-                  {value.forecast?.forecastday[0].day.avgtemp_c && (
-                    <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                      {value.forecast?.forecastday[0].day.avgtemp_c + "°"}
-                    </Text>
-                  )}
-                  <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                    {day}
-                  </Text>
-                </Flex>
-                <Flex
-                  flexDir={"column"}
-                  alignItems={"center"}
-                  position={"relative"}
-                  mb={5}
-                >
-                  <Image
-                    src={value.current?.condition.icon}
-                    boxSize={value.current?.condition.icon && 100}
-                  />
-                  {value.forecast?.forecastday[0].day.maxwind_kph && (
-                    <Text
-                      position={"absolute"}
-                      bottom={0.1}
-                      color={"white"}
-                      fontSize={"16px"}
-                      fontWeight={400}
-                    >
-                      {value.forecast?.forecastday[0].day.maxwind_kph + "kph"}
-                    </Text>
-                  )}
-                </Flex>
-              </CardWeather>
-            </Flex>
+            </Grid>
           </Flex>
         </Flex>
       </Flex>
