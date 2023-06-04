@@ -29,7 +29,7 @@ export const Home = () => {
   const newDate = new Date(value.forecast?.forecastday[0].date);
   const dayNumber = newDate.getDay();
   const monthNumber = newDate.getMonth() + 1;
-
+  const hourCurrent = new Date().getHours();
   const day = weekDays[dayNumber];
 
   const weatherCondition = value.current?.condition.text;
@@ -67,11 +67,12 @@ export const Home = () => {
         >
           <Flex
             w={"100%"}
-            alignItems={"center"}
+            alignItems={"flex-start"}
             justifyContent={"center"}
             position={"relative"}
             minH={"90vh"}
             maxH={"100vh"}
+            flexDir={"column"}
           >
             <Flex
               as={"video"}
@@ -91,11 +92,9 @@ export const Home = () => {
               justifyContent={"center"}
             />
             <HStack
-              // position={"absolute"}
-              // top={0}
-              // left={8}
               h={100}
               w={"60%"}
+              pl={5}
               alignItems={"center"}
               justifyContent={"space-between"}
             >
@@ -117,24 +116,24 @@ export const Home = () => {
               )}
             </HStack>
             <Grid
-              minW={"100%"}
-              minH={"90vh"}
-              templateRows="repeat(2, 1fr)"
+              templateRows="repeat(2, 240px)"
               templateColumns="repeat(5, 1fr)"
+              w={"97%"}
+              minW={"95%"}
+              m={"0 auto"}
+              minH={"76vh"}
               maxH={"650px"}
               flexDir={"row"}
-              // wrap={"wrap"}
-              gap={"2rem"}
+              gap={"1rem"}
               alignItems={"flex-start"}
               justifyContent={"center"}
-              pt={"120px"}
             >
               <CardWeather
                 rowSpan={2}
                 colSpan={1}
-                heightBig={380}
-                heightSmall={350}
+                heightBig={460}
                 widthBig={320}
+                heightSmall={430}
                 widthSmall={290}
                 opacity={0.9}
               >
@@ -175,9 +174,8 @@ export const Home = () => {
                 rowSpan={1}
                 colSpan={2}
                 heightBig={200}
-                widthBig={400}
-                heightSmall={180}
-                widthSmall={380}
+                heightSmall={170}
+                widthSmall={"95%"}
                 opacity={0.9}
               >
                 <Flex flexDir={"column"} alignItems={"center"}>
@@ -217,9 +215,8 @@ export const Home = () => {
                 rowSpan={1}
                 colSpan={2}
                 heightBig={200}
-                widthBig={400}
-                heightSmall={180}
-                widthSmall={380}
+                heightSmall={170}
+                widthSmall={"95%"}
                 opacity={0.9}
               >
                 <Flex flexDir={"column"} alignItems={"center"}>
@@ -257,45 +254,85 @@ export const Home = () => {
               </CardWeather>
               <CardWeather
                 rowSpan={1}
-                colSpan={2}
+                colSpan={3}
                 heightBig={200}
-                widthBig={400}
-                heightSmall={180}
-                widthSmall={380}
+                heightSmall={170}
+                widthSmall={"95%"}
                 opacity={0.9}
               >
-                <Flex flexDir={"column"} alignItems={"center"}>
-                  {value.forecast?.forecastday[0].day.avgtemp_c && (
-                    <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                      {value.forecast?.forecastday[0].day.avgtemp_c + "°"}
-                    </Text>
-                  )}
-                  <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                    {day}
-                  </Text>
-                </Flex>
-                <Flex
-                  flexDir={"column"}
+                <HStack
                   alignItems={"center"}
-                  position={"relative"}
-                  mb={5}
+                  justifyContent={"center"}
+                  w={"100%"}
+                  h={"100%"}
                 >
-                  <Image
-                    src={value.current?.condition.icon}
-                    boxSize={value.current?.condition.icon && 100}
-                  />
-                  {value.forecast?.forecastday[0].day.maxwind_kph && (
-                    <Text
-                      position={"absolute"}
-                      bottom={0.1}
-                      color={"white"}
-                      fontSize={"16px"}
-                      fontWeight={400}
-                    >
-                      {value.forecast?.forecastday[0].day.maxwind_kph + "kph"}
-                    </Text>
-                  )}
-                </Flex>
+                  {value.forecast?.forecastday[0].hour.map((elem, i) => {
+                    if (i >= hourCurrent && i <= hourCurrent + 5) {
+                      return (
+                        <VStack
+                          key={elem.time}
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                          w={"18%"}
+                          h={"100%"}
+                        >
+                          {i === hourCurrent ? (
+                            <Text
+                              display={"flex"}
+                              alignItems={"center"}
+                              h={"33%"}
+                              color={"white"}
+                              fontWeight={500}
+                            >
+                              Agora
+                            </Text>
+                          ) : (
+                            <Text
+                              display={"flex"}
+                              alignItems={"center"}
+                              h={"33%"}
+                              color={"white"}
+                              fontWeight={500}
+                            >
+                              {elem.time.slice(11, 13) + "hrs"}
+                            </Text>
+                          )}
+                          <Text
+                            display={"flex"}
+                            alignItems={"center"}
+                            h={"33%"}
+                            color={"white"}
+                            fontWeight={500}
+                            fontSize={"22px"}
+                          >
+                            {elem.temp_c + "°"}
+                          </Text>
+                          <Image
+                            h={"33%"}
+                            src={elem.condition.icon}
+                            boxSize={elem.condition.icon && 61}
+                          />
+                        </VStack>
+                      );
+                    }
+                  })}
+                </HStack>
+              </CardWeather>
+              <CardWeather
+                rowSpan={1}
+                colSpan={1}
+                heightBig={200}
+                widthBig={300}
+                heightSmall={170}
+                widthSmall={270}
+                opacity={0.9}
+              >
+                <HStack
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  w={"100%"}
+                  h={"100%"}
+                ></HStack>
               </CardWeather>
             </Grid>
           </Flex>
