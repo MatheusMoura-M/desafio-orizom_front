@@ -1,4 +1,13 @@
-import { Flex, Grid, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  Grid,
+  HStack,
+  Image,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import Header from "../../components/NavBar";
 import Chuva from "../../assets/movies/chovisco.mp4";
 import Ensolarado from "../../assets/movies/ceu-limpo.mp4";
@@ -13,6 +22,7 @@ import { useAuth } from "../../context/webContext";
 import CardWeather from "../../components/Cards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 
 export const Home = () => {
   const { value } = useAuth();
@@ -29,10 +39,15 @@ export const Home = () => {
   const newDate = new Date(value.forecast?.forecastday[0].date);
   const dayNumber = newDate.getDay();
   const monthNumber = newDate.getMonth() + 1;
-  const hourCurrent = new Date().getHours();
+  const lastUpdateTime = parseInt(value.current?.last_updated.slice(11, 13));
   const day = weekDays[dayNumber];
+  let count = 0;
 
   const weatherCondition = value.current?.condition.text;
+  const weatherConditionFormated =
+    weatherCondition?.split(" ")[0] === "Possibilidade" &&
+    weatherCondition?.replace("Possibilidade", "Possib.");
+
   const MovieCurrent =
     weatherCondition == "Céu limpo"
       ? Ensolarado
@@ -170,6 +185,7 @@ export const Home = () => {
                   })}
                 </VStack>
               </CardWeather>
+
               <CardWeather
                 rowSpan={1}
                 colSpan={2}
@@ -179,7 +195,7 @@ export const Home = () => {
                 opacity={0.9}
               >
                 <Flex flexDir={"column"} alignItems={"center"}>
-                  {value.forecast?.forecastday[0].day.avgtemp_c && (
+                  {value.forecast && (
                     <Text color={"white"} fontSize={"32px"} fontWeight={500}>
                       {value.forecast?.forecastday[0].day.avgtemp_c + "°"}
                     </Text>
@@ -193,6 +209,7 @@ export const Home = () => {
                   alignItems={"center"}
                   position={"relative"}
                   mb={5}
+                  h={115}
                 >
                   <Image
                     src={value.current?.condition.icon}
@@ -201,7 +218,7 @@ export const Home = () => {
                   {value.forecast?.forecastday[0].day.maxwind_kph && (
                     <Text
                       position={"absolute"}
-                      bottom={0.1}
+                      bottom={0}
                       color={"white"}
                       fontSize={"16px"}
                       fontWeight={400}
@@ -211,6 +228,7 @@ export const Home = () => {
                   )}
                 </Flex>
               </CardWeather>
+
               <CardWeather
                 rowSpan={1}
                 colSpan={2}
@@ -219,39 +237,65 @@ export const Home = () => {
                 widthSmall={"95%"}
                 opacity={0.9}
               >
-                <Flex flexDir={"column"} alignItems={"center"}>
-                  {value.forecast?.forecastday[0].day.avgtemp_c && (
-                    <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                      {value.forecast?.forecastday[0].day.avgtemp_c + "°"}
+                {value.forecast && (
+                  <VStack
+                    spacing={1.5}
+                    alignItems={"flex-start"}
+                    justifyContent={"center"}
+                    h={"100%"}
+                    w={"97%"}
+                  >
+                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                      Condição climática:{" "}
+                      <Text
+                        as={"span"}
+                        color={"#62b5ff"}
+                        display={"inline-block"}
+                        fontSize={"20px"}
+                        letterSpacing={"-0.5px"}
+                      >
+                        {weatherConditionFormated}
+                      </Text>
                     </Text>
-                  )}
-                  <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                    {day}
-                  </Text>
-                </Flex>
-                <Flex
-                  flexDir={"column"}
-                  alignItems={"center"}
-                  position={"relative"}
-                  mb={5}
-                >
-                  <Image
-                    src={value.current?.condition.icon}
-                    boxSize={value.current?.condition.icon && 100}
-                  />
-                  {value.forecast?.forecastday[0].day.maxwind_kph && (
-                    <Text
-                      position={"absolute"}
-                      bottom={0.1}
-                      color={"white"}
-                      fontSize={"16px"}
-                      fontWeight={400}
-                    >
-                      {value.forecast?.forecastday[0].day.maxwind_kph + "kph"}
+                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                      Umidade:{" "}
+                      <Text
+                        as={"span"}
+                        color={"#62b5ff"}
+                        display={"inline-block"}
+                        fontSize={"20px"}
+                      >
+                        {value.current?.humidity + "%"}
+                      </Text>
                     </Text>
-                  )}
-                </Flex>
+                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                      Chance de chover:{" "}
+                      <Text
+                        as={"span"}
+                        color={"#62b5ff"}
+                        display={"inline-block"}
+                        fontSize={"20px"}
+                      >
+                        {value.forecast?.forecastday[0].day
+                          .daily_chance_of_rain + "%"}
+                      </Text>
+                    </Text>
+                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                      Chance de nevar:{" "}
+                      <Text
+                        as={"span"}
+                        color={"#62b5ff"}
+                        display={"inline-block"}
+                        fontSize={"20px"}
+                      >
+                        {value.forecast?.forecastday[0].day
+                          .daily_chance_of_snow + "%"}
+                      </Text>
+                    </Text>
+                  </VStack>
+                )}
               </CardWeather>
+
               <CardWeather
                 rowSpan={1}
                 colSpan={3}
@@ -267,7 +311,8 @@ export const Home = () => {
                   h={"100%"}
                 >
                   {value.forecast?.forecastday[0].hour.map((elem, i) => {
-                    if (i >= hourCurrent && i <= hourCurrent + 5) {
+                    if (i >= lastUpdateTime && i <= lastUpdateTime + 5) {
+                      count += 1;
                       return (
                         <VStack
                           key={elem.time}
@@ -276,7 +321,7 @@ export const Home = () => {
                           w={"18%"}
                           h={"100%"}
                         >
-                          {i === hourCurrent ? (
+                          {i === lastUpdateTime ? (
                             <Text
                               display={"flex"}
                               alignItems={"center"}
@@ -316,8 +361,53 @@ export const Home = () => {
                       );
                     }
                   })}
+                  {value.forecast?.forecastday[0].hour.map((elem, i) => {
+                    if (
+                      (count === 1 && i < 5) ||
+                      (count === 2 && i < 4) ||
+                      (count === 3 && i < 3) ||
+                      (count === 4 && i < 2) ||
+                      (count === 5 && i < 1)
+                    ) {
+                      return (
+                        <VStack
+                          key={elem.time}
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                          w={"18%"}
+                          h={"100%"}
+                        >
+                          <Text
+                            display={"flex"}
+                            alignItems={"center"}
+                            h={"33%"}
+                            color={"white"}
+                            fontWeight={500}
+                          >
+                            {elem.time.slice(11, 13) + "hrs"}
+                          </Text>
+                          <Text
+                            display={"flex"}
+                            alignItems={"center"}
+                            h={"33%"}
+                            color={"white"}
+                            fontWeight={500}
+                            fontSize={"22px"}
+                          >
+                            {elem.temp_c + "°"}
+                          </Text>
+                          <Image
+                            h={"33%"}
+                            src={elem.condition.icon}
+                            boxSize={elem.condition.icon && 61}
+                          />
+                        </VStack>
+                      );
+                    }
+                  })}
                 </HStack>
               </CardWeather>
+
               <CardWeather
                 rowSpan={1}
                 colSpan={1}
@@ -327,12 +417,60 @@ export const Home = () => {
                 widthSmall={270}
                 opacity={0.9}
               >
-                <HStack
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  w={"100%"}
-                  h={"100%"}
-                ></HStack>
+                {value.forecast && (
+                  <Flex
+                    w={"100%"}
+                    h={"90%"}
+                    alignItems={"center"}
+                    justifyContent={"flex-start"}
+                    flexDir={"column"}
+                    gap={"1rem"}
+                  >
+                    <Text color={"white"} fontWeight={500} fontSize={"22px"}>
+                      Nascer e pôr do sol
+                    </Text>
+                    <HStack spacing={5}>
+                      <Center
+                        bg={"#d95a00"}
+                        w={"41px"}
+                        h={"41px"}
+                        borderRadius={"full"}
+                      >
+                        <Center
+                          bg={"#f5a20b"}
+                          w={"35px"}
+                          h={"35px"}
+                          borderRadius={"full"}
+                        >
+                          <ArrowUpIcon boxSize={"20px"} color={"white"} />
+                        </Center>
+                      </Center>
+                      <Text color={"white"} fontWeight={500}>
+                        {value.forecast?.forecastday[0].astro.sunrise}
+                      </Text>
+                    </HStack>
+                    <HStack spacing={5}>
+                      <Center
+                        bg={"#d95a00"}
+                        w={"41px"}
+                        h={"41px"}
+                        borderRadius={"full"}
+                      >
+                        <Center
+                          bg={"#f5a20b"}
+                          w={"35px"}
+                          h={"35px"}
+                          borderRadius={"full"}
+                        >
+                          <ArrowDownIcon boxSize={"20px"} color={"white"} />
+                        </Center>
+                      </Center>
+                      <Text color={"white"} fontWeight={500}>
+                        {value.forecast?.forecastday[0].astro.sunset}
+                      </Text>
+                    </HStack>
+                  </Flex>
+                )}
               </CardWeather>
             </Grid>
           </Flex>
