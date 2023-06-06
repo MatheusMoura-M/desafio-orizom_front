@@ -43,10 +43,18 @@ export const AuthProvider = ({ children }: iProviderProps) => {
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        error.response?.data.error.message === "No matching location found." &&
-          toast.error("Nenhum local correspondente encontrado", {
-            autoClose: 1500,
-          });
+        error.response?.data.error.message === "No matching location found."
+          ? toast.error("Nenhum local correspondente encontrado", {
+              autoClose: 1500,
+            })
+          : error.response?.data.error.message ===
+            "API key is invalid or not provided."
+          ? toast.error("A chave de API é inválida ou não foi fornecida", {
+              autoClose: 1500,
+            })
+          : toast.error("Ops, ocorreu algum erro", {
+              autoClose: 1000,
+            });
       }
     }
   };
