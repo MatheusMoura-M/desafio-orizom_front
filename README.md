@@ -12,6 +12,7 @@ Nele, você encontra informações como :
 - Chance de chover
 - Chance de nevar
 - Hórario previsto para o nascer e pôr do sol
+- Temperaturas em Celsius e Fahrenheit
 
 
 ## 🔧 Ferramentas / Tools
