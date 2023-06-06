@@ -2,7 +2,7 @@
 
 ## 📕 Sobre / About
 
-Pensando em solucionar problemas de empresas e recrutadores que estão buscando um profissional, o projeto visa deixar rápido, legível e competitivo as suas buscas. Para isso os principais links dos usuários, sua formação e suas stacks ficaram expostos, conforme autorização do mesmo(privado ou publico), em um ambiente dev. Os recrutadores terão acesso a isso independente do tipo da autorização, sendo apenas possível para recrutadores autorizados da plataforma abrir um canal de conversa com um dev.
+Your Climate é uma projeto onde você pode pesquisar sobre o clima de locais diversos, podendo pesquisar por nome da cidade, latitude e longitude, dentre outros.
 
 ## 🔧 Ferramentas / Tools
 
