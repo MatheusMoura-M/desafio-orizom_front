@@ -41,7 +41,7 @@ export const FormSearch = ({
         bg: "#3076bb94",
       }}
       w={{ base: "90%", sm: "unset" }}
-      autoComplete="off"
+      // autoComplete="off"
     >
       <Input
         placeholder="Busque por uma cidade..."

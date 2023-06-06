@@ -1,4 +1,5 @@
 import {
+  Button,
   Center,
   Flex,
   Grid,
@@ -13,12 +14,14 @@ import CardWeather from "../../components/Cards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { handleMovieCurrent } from "../../utils/weatherConditionMovie";
+import CircleComponent from "../../components/Circle";
 
 export const Home = () => {
   const { cityCurrent, getListOfWeatherCondition, weatherCondition } =
     useAuth();
+  const [activeTemp, setActiveTemp] = useState("ºC");
 
   const weekDays = [
     "Segunda",
@@ -97,22 +100,76 @@ export const Home = () => {
               justifyContent={"flex-start"}
             >
               {cityCurrent.location?.name && (
-                <Text
-                  w={"100%"}
-                  align={"start"}
-                  color={"white"}
-                  fontSize={"24px"}
-                  fontWeight={500}
-                  zIndex={1}
-                >
-                  Previsão de hoje (
-                  {cityCurrent.forecast?.forecastday[0].date.slice(8)}/
-                  {newDate.getMonth() + 1 < 10
-                    ? 0 + (newDate.getMonth() + 1).toString()
-                    : newDate.getMonth() + 1 + " "}
-                  ) {cityCurrent.location?.name + " "}
-                  <FontAwesomeIcon icon={faLocationDot} size="1x" />
-                </Text>
+                <>
+                  <Text
+                    w={"80%"}
+                    align={"start"}
+                    color={"white"}
+                    fontSize={"24px"}
+                    fontWeight={500}
+                    zIndex={1}
+                  >
+                    Previsão de hoje (
+                    {cityCurrent.forecast?.forecastday[0].date.slice(8)}/
+                    {newDate.getMonth() + 1 < 10
+                      ? 0 + (newDate.getMonth() + 1).toString()
+                      : newDate.getMonth() + 1 + " "}
+                    ) {cityCurrent.location?.name + " "}
+                    <FontAwesomeIcon icon={faLocationDot} size="1x" />
+                  </Text>
+                  <HStack
+                    spacing={{ base: 2, sm2: 4 }}
+                    w={"20%"}
+                    align={"center"}
+                    justifyContent={"center"}
+                    flexDir={{ base: "column", sm2: "row" }}
+                  >
+                    <CircleComponent
+                      bgBig={activeTemp === "ºC" ? "black" : "#ffffffd9"}
+                      bgSmall={activeTemp === "ºC" ? "black" : "#ffffffd9"}
+                      color={activeTemp === "ºC" ? "#ffffffd9" : "black"}
+                      fontWeight={600}
+                      borderRadius={"full"}
+                      hBig={{ base: "35px", sm2: "41px" }}
+                      wBig={{ base: "35px", sm2: "41px" }}
+                      hSmall={{ base: "35px", sm2: "41px" }}
+                      wSmall={{ base: "35px", sm2: "41px" }}
+                      zIndex={1}
+                      onClick={() => setActiveTemp("ºC")}
+                      transition={".3s"}
+                      hover={{
+                        transform: "scale(1.05) translate(-1px,-1px)",
+                        bg: activeTemp === "ºC" ? "#292424" : "grey.4",
+                        transition: ".3s",
+                      }}
+                      cursor={"pointer"}
+                    >
+                      ºC
+                    </CircleComponent>
+                    <CircleComponent
+                      bgBig={activeTemp === "ºF" ? "black" : "#ffffffd9"}
+                      bgSmall={activeTemp === "ºF" ? "black" : "#ffffffd9"}
+                      color={activeTemp === "ºF" ? "#ffffffd9" : "black"}
+                      fontWeight={600}
+                      borderRadius={"full"}
+                      hBig={{ base: "35px", sm2: "41px" }}
+                      wBig={{ base: "35px", sm2: "41px" }}
+                      hSmall={{ base: "35px", sm2: "41px" }}
+                      wSmall={{ base: "35px", sm2: "41px" }}
+                      zIndex={1}
+                      onClick={() => setActiveTemp("ºF")}
+                      transition={".3s"}
+                      hover={{
+                        transform: "scale(1.05) translate(-1px,-2px)",
+                        bg: activeTemp === "ºF" ? "#292424" : "grey.4",
+                        transition: ".3s",
+                      }}
+                      cursor={"pointer"}
+                    >
+                      ºF
+                    </CircleComponent>
+                  </HStack>
+                </>
               )}
             </HStack>
             <Grid
@@ -190,8 +247,13 @@ export const Home = () => {
                           fontWeight={500}
                           fontFamily={"lexend"}
                         >
-                          {elem.day.maxtemp_c + "°"} /{" "}
-                          {elem.day.mintemp_c + "°"}
+                          {activeTemp === "ºC"
+                            ? elem.day.maxtemp_c + "°"
+                            : elem.day.maxtemp_f + "°"}{" "}
+                          /{" "}
+                          {activeTemp === "ºC"
+                            ? elem.day.mintemp_c + "°"
+                            : elem.day.mintemp_f + "°"}
                         </Text>
                       </Flex>
                     );
@@ -224,7 +286,11 @@ export const Home = () => {
                       fontWeight={400}
                       fontFamily={"lexend"}
                     >
-                      {cityCurrent.forecast?.forecastday[0].day.avgtemp_c + "°"}
+                      {activeTemp === "ºC"
+                        ? cityCurrent.forecast?.forecastday[0].day.avgtemp_c +
+                          "°"
+                        : cityCurrent.forecast?.forecastday[0].day.avgtemp_f +
+                          "°"}
                     </Text>
                   )}
                   <Text color={"white"} fontSize={"32px"} fontWeight={500}>
@@ -442,7 +508,9 @@ export const Home = () => {
                             fontWeight={400}
                             fontFamily={"lexend"}
                           >
-                            {elem.temp_c + "°"}
+                            {activeTemp === "ºC"
+                              ? elem.temp_c + "°"
+                              : elem.temp_f + "°"}
                           </Text>
                           <Image
                             h={"33%"}
@@ -514,7 +582,9 @@ export const Home = () => {
                             fontWeight={400}
                             fontFamily={"lexend"}
                           >
-                            {elem.temp_c + "°"}
+                            {activeTemp === "ºC"
+                              ? elem.temp_c + "°"
+                              : elem.temp_f + "°"}
                           </Text>
                           <Image
                             h={"33%"}
@@ -556,21 +626,17 @@ export const Home = () => {
                       Nascer e pôr do sol
                     </Text>
                     <HStack spacing={5}>
-                      <Center
-                        bg={"#d95a00"}
-                        w={"41px"}
-                        h={"41px"}
+                      <CircleComponent
+                        hBig={"41px"}
+                        hSmall={"35px"}
+                        wBig={"41px"}
+                        wSmall={"35px"}
                         borderRadius={"full"}
+                        bgBig={"#d95a00"}
+                        bgSmall={"#f5a20b"}
                       >
-                        <Center
-                          bg={"#f5a20b"}
-                          w={"35px"}
-                          h={"35px"}
-                          borderRadius={"full"}
-                        >
-                          <ArrowUpIcon boxSize={"20px"} color={"white"} />
-                        </Center>
-                      </Center>
+                        <ArrowUpIcon boxSize={"20px"} color={"white"} />
+                      </CircleComponent>
 
                       <Text
                         color={"white"}
@@ -582,21 +648,17 @@ export const Home = () => {
                       </Text>
                     </HStack>
                     <HStack spacing={5}>
-                      <Center
-                        bg={"#d95a00"}
-                        w={"41px"}
-                        h={"41px"}
+                      <CircleComponent
+                        hBig={"41px"}
+                        hSmall={"35px"}
+                        wBig={"41px"}
+                        wSmall={"35px"}
                         borderRadius={"full"}
+                        bgBig={"#d95a00"}
+                        bgSmall={"#f5a20b"}
                       >
-                        <Center
-                          bg={"#f5a20b"}
-                          w={"35px"}
-                          h={"35px"}
-                          borderRadius={"full"}
-                        >
-                          <ArrowDownIcon boxSize={"20px"} color={"white"} />
-                        </Center>
-                      </Center>
+                        <ArrowDownIcon boxSize={"20px"} color={"white"} />
+                      </CircleComponent>
                       <Text
                         color={"white"}
                         minW={"70px"}
