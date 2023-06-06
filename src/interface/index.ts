@@ -7,7 +7,6 @@ export interface iProviderProps {
 export interface iSearchCity {
   city: string;
 }
-
 export interface iHourForecastDay {
   time: string;
   temp_c: string;
@@ -37,6 +36,8 @@ export interface iForecastDays {
     avgtemp_f: string;
     maxwind_kph: string;
     avghumidity: string;
+    daily_chance_of_rain: number;
+    daily_chance_of_snow: number;
     condition: {
       text: string;
       icon: string;
@@ -72,4 +73,11 @@ export interface iGetCityByName {
   forecast: {
     forecastday: iForecastDays[];
   };
+}
+
+export interface iGetListOfWeatherCondition {
+  weather_condition_night: string;
+  weather_condition_day: string;
+  night: string;
+  day: string;
 }

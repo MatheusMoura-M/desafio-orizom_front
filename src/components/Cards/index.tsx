@@ -1,29 +1,48 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, GridItem } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 interface iCardProps {
   children: ReactNode;
-  heightBig: string | number;
-  heightSmall: string | number;
-  widthBig: string | number;
-  widthSmall: string | number;
-  opacity?: string | number;
+  hBig?: {} | string | number;
+  hSmall?: {} | string | number;
+  wBig?: {} | string | number;
+  wSmall?: {} | string | number;
+  minW?: {} | string | number;
+  maxW?: {} | string | number;
+  opacity?: {} | string | number;
   flexDir?: string;
+  rowSpan?: {} | number;
+  colSpan?: {} | number;
+  order: {} | number;
+  gap?: {} | string | number;
+  margin?: {} | string | number;
 }
 
 const CardWeather = ({
   children,
-  heightBig,
-  heightSmall,
-  widthBig,
-  widthSmall,
+  hBig,
+  hSmall,
+  wBig,
+  wSmall,
   opacity,
   flexDir,
+  rowSpan,
+  colSpan,
+  order,
+  minW,
+  maxW,
+  gap,
+  margin,
 }: iCardProps) => {
   return (
-    <Flex
-      h={heightBig}
-      w={widthBig}
+    <GridItem
+      display={"flex"}
+      rowSpan={rowSpan}
+      colSpan={colSpan}
+      h={hBig}
+      w={wBig}
+      minW={minW}
+      maxW={maxW}
       alignItems={"center"}
       justifyContent={"center"}
       bg={"rgb(17,62,103)"}
@@ -33,13 +52,15 @@ const CardWeather = ({
       zIndex={1}
       opacity={opacity}
       borderRadius={"1.5rem"}
+      order={order}
+      m={margin}
     >
       <Flex
-        h={heightSmall}
-        w={widthSmall}
+        h={hSmall}
+        w={wSmall}
         alignItems={"center"}
         justifyContent={"center"}
-        gap={"3rem"}
+        gap={gap}
         bg={"rgb(17,62,103)"}
         bgGradient={
           "linear-gradient(90deg, rgba(41 104 135)  20%, rgba(30,75,176,1) 65%,rgba(17,62,103,1) 98%)"
@@ -49,7 +70,7 @@ const CardWeather = ({
       >
         {children}
       </Flex>
-    </Flex>
+    </GridItem>
   );
 };
 

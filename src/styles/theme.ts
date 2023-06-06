@@ -2,32 +2,19 @@ import { extendTheme } from "@chakra-ui/react";
 
 const breakpoints = {
   xs: "21.3em", // 340px
-  xs1: "23.43em", // 375px
-  xs2: "25em", // 400px
-  xs3: "27.37em", // 438px
   sm: "30em", // 480px
-  smm: "31.25em", // 500px
   sm1: "31.87em", // 510px
-  xsm2: "33.76em", // 540px
-  xsm3: "35.625em", // 570px
-  sm2: "40em", // 640px
-  sm3: "43.55em", // 697px
+  sm2: "35.625em", // 570px
+  sm3: "40.625em", // 650px
   sm4: "45em", // 720px
   md: "48em", // 768px
   md1: "50em", // 800px
   md2: "55em", // 880px
-  md3: "59.375em", // 950px
-  lg: "62em", // 992px
-  lg2: "64.37em", // 1030px
-  lg2m: "69.375em", // 1110px
-  lg3: "72em", // 1152px
-  lg4: "75em", // 1200px
-  xl: "80em", // 1280px
-  xl1: "84.37em", // 1350px
-  xl2: "88em", // 1408px
-  xl2m: "90.625em", // 1450px
-  xl3: "96em", // 1536px
-  xl4: "107.5625em", // 1721px
+  lg: "61.25em", // 980px
+  lg1: "70.9375em", // 1135px
+  lg2: "75em", // 1200px
+  xl: "78.125em", // 1250px
+  xl1: "80em", // 1280px
 };
 
 const custonTheme = extendTheme({
@@ -45,12 +32,9 @@ const custonTheme = extendTheme({
       2: "#495057",
       3: "#868E96",
       4: "#ADB5BD",
-      5: "#CED4DA",
-      6: "#DEE2E6",
-      7: "#E9ECEF",
-      8: "#F1F3F5",
-      9: "#F8F9FA",
-      10: "#FDFDFD",
+      5: "#DEE2E6",
+      6: "#F8F9FA",
+      7: "#FDFDFD",
     },
     whiteFixed: {
       1: "#FFFFFF",

@@ -5,6 +5,7 @@ const RoutesMain = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/:city" element={<Home />} />
     </Routes>
   );
 };
