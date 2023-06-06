@@ -31,12 +31,9 @@ export const Home = () => {
   ];
 
   const newDate = new Date(cityCurrent.forecast?.forecastday[0].date);
-  const dayNumber = newDate.getDay();
-  const monthNumber = newDate.getMonth() + 1;
   const lastUpdateTime = parseInt(
     cityCurrent.current?.last_updated.slice(11, 13)
   );
-  const day = weekDays[dayNumber];
   let count = 0;
 
   useEffect(() => {
@@ -53,7 +50,7 @@ export const Home = () => {
         margin={"0 auto"}
         h={"100%"}
         minH={"90vh"}
-        maxH={{ base: "unset", lg4: "100vh" }}
+        maxH={{ base: "unset", lg2: "100vh" }}
         bg={"rgb(17,77,103)"}
         bgGradient={
           "linear-gradient(90deg, rgba(17,77,103,1) 18%, rgba(30,87,176,1) 58%, rgba(54,170,177,1) 98%)"
@@ -61,7 +58,7 @@ export const Home = () => {
       >
         <Flex
           minH={"90vh"}
-          maxH={{ base: "unset", lg4: "100vh" }}
+          maxH={{ base: "unset", lg2: "100vh" }}
           alignItems={"center"}
           justifyContent={"center"}
         >
@@ -71,14 +68,14 @@ export const Home = () => {
             justifyContent={"center"}
             position={"relative"}
             minH={"90vh"}
-            maxH={{ base: "unset", lg4: "100vh" }}
+            maxH={{ base: "unset", lg2: "100vh" }}
             flexDir={"column"}
           >
             <Flex
               as={"video"}
               src={handleMovieCurrent()}
               minH={"90vh"}
-              maxH={{ base: "unset", lg4: "100vh" }}
+              maxH={{ base: "unset", lg2: "100vh" }}
               h={"100%"}
               autoPlay
               muted
@@ -110,10 +107,10 @@ export const Home = () => {
                 >
                   Previsão de hoje (
                   {cityCurrent.forecast?.forecastday[0].date.slice(8)}/
-                  {monthNumber < 10 ? 0 + monthNumber.toString() : monthNumber})
-                  &nbsp;
-                  {cityCurrent.location?.name}
-                  &nbsp;
+                  {newDate.getMonth() + 1 < 10
+                    ? 0 + (newDate.getMonth() + 1).toString()
+                    : newDate.getMonth() + 1 + " "}
+                  ) {cityCurrent.location?.name + " "}
                   <FontAwesomeIcon icon={faLocationDot} size="1x" />
                 </Text>
               )}
@@ -123,20 +120,20 @@ export const Home = () => {
                 base: "repeat(5, 240px)",
                 sm4: "repeat(4, 240px)",
                 lg: "repeat(3, 240px)",
-                lg4: "repeat(2, 240px)",
+                lg2: "repeat(2, 240px)",
               }}
               templateColumns={{
                 base: "repeat(1, 1fr)",
                 sm4: "repeat(2, 1fr)",
                 lg: "repeat(3, 1fr)",
-                lg4: "repeat(5, 1fr)",
+                lg2: "repeat(5, 1fr)",
               }}
-              w={{ base: "85%", lg: "97%", lg4: "97%" }}
-              minW={{ base: "83%", lg: "95%", lg4: "95%" }}
+              w={{ base: "85%", lg: "97%", lg2: "97%" }}
+              minW={{ base: "83%", lg: "95%", lg2: "95%" }}
               m={"0 auto"}
               mb={{ base: 50, sm4: 0 }}
               minH={"74vh"}
-              maxH={{ base: "unset", lg4: 479 }}
+              maxH={{ base: "unset", lg2: 479 }}
               flexDir={"row"}
               gap={"1rem"}
               alignItems={"flex-start"}
@@ -146,7 +143,7 @@ export const Home = () => {
                 rowSpan={2}
                 colSpan={1}
                 hBig={460}
-                wBig={{ base: "92%", sm1: "80%", xsm3: "70%", sm4: 320 }}
+                wBig={{ base: "92%", sm1: "80%", sm2: "70%", sm4: 320 }}
                 hSmall={430}
                 wSmall={"90%"}
                 opacity={0.9}
@@ -161,8 +158,7 @@ export const Home = () => {
                 >
                   {cityCurrent.forecast?.forecastday.map((elem) => {
                     const newDate = new Date(elem.date);
-                    const dayNumber = newDate.getDay();
-                    const day = weekDays[dayNumber];
+                    const day = weekDays[newDate.getDay()];
 
                     return (
                       <Flex
@@ -189,10 +185,10 @@ export const Home = () => {
 
               <CardWeather
                 rowSpan={1}
-                colSpan={{ base: 1, lg4: 2 }}
+                colSpan={{ base: 1, lg2: 2 }}
                 hBig={200}
                 hSmall={170}
-                wSmall={{ base: "92%", sm4: "90%", md1: "92%", lg4: "94%" }}
+                wSmall={{ base: "92%", sm4: "90%", md1: "92%", lg2: "94%" }}
                 minW={{ sm4: "100%", md: "unset" }}
                 opacity={0.9}
                 order={2}
@@ -200,8 +196,8 @@ export const Home = () => {
                   base: "1rem",
                   sm4: 0,
                   md: "1rem",
-                  lg3: "2rem",
-                  lg4: "4rem",
+                  lg1: "2rem",
+                  lg2: "4rem",
                 }}
               >
                 <Flex flexDir={"column"} alignItems={"center"}>
@@ -211,7 +207,7 @@ export const Home = () => {
                     </Text>
                   )}
                   <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                    {day}
+                    {weekDays[newDate.getDay()]}
                   </Text>
                 </Flex>
                 <Flex
@@ -247,13 +243,13 @@ export const Home = () => {
                 hSmall={170}
                 wSmall={"95%"}
                 opacity={0.9}
-                order={{ base: 4, lg4: 3 }}
+                order={{ base: 4, lg2: 3 }}
               >
                 {cityCurrent.forecast && (
                   <VStack
                     spacing={{
                       base: 1,
-                      lg4: weatherCondition.length > 18 ? 0 : 1.5,
+                      lg2: weatherCondition.length > 18 ? 0 : 1.5,
                     }}
                     alignItems={"flex-start"}
                     justifyContent={"center"}
@@ -319,7 +315,7 @@ export const Home = () => {
                 minW={{ base: "100%", sm4: "unset" }}
                 maxW={{ base: 601, sm4: "unset" }}
                 opacity={0.9}
-                order={{ base: 5, lg4: 4 }}
+                order={{ base: 5, lg2: 4 }}
               >
                 <HStack
                   as={"ul"}
@@ -336,12 +332,13 @@ export const Home = () => {
                     },
                     "::-webkit-scrollbar-track": {
                       bg: "#4a91b3",
-                      borderRadius: "10px",
+                      borderBottomRadius: "24px",
                       w: "10px",
+                      transition: "2.3s",
                     },
                     "::-webkit-scrollbar-thumb": {
                       bg: "#204e64",
-                      borderRadius: "24px",
+                      borderBottomRadius: "24px",
                     },
                   }}
                 >
@@ -357,16 +354,18 @@ export const Home = () => {
                           minW={{
                             base: "25.5%",
                             sm: "20.5%",
-                            xsm3: "17.5%",
+                            sm2: "17.5%",
                             sm4: "14.5%",
                             md2: "13.5%",
                             lg: "12.5%",
-                            lg4: "15%",
+                            lg2: "15%",
                             xl: "14%",
                             xl1: "12.5%",
                           }}
                           h={"100%"}
-                          borderRight={"1px solid grey"}
+                          borderRight={
+                            lastUpdateTime + 8 !== i ? "1px solid grey" : 0
+                          }
                         >
                           {i === lastUpdateTime ? (
                             <Text
@@ -427,11 +426,11 @@ export const Home = () => {
                           minW={{
                             base: "25.5%",
                             sm: "20.5%",
-                            xsm3: "17.5%",
+                            sm2: "17.5%",
                             sm4: "14.5%",
                             md2: "13.5%",
                             lg: "12.5%",
-                            lg4: "15%",
+                            lg2: "15%",
                             xl: "14%",
                             xl1: "12.5%",
                           }}
@@ -474,10 +473,10 @@ export const Home = () => {
                 colSpan={1}
                 hBig={200}
                 hSmall={170}
-                wSmall={{ base: "92%", sm4: "90%", md1: "92%", lg4: "90%" }}
+                wSmall={{ base: "92%", sm4: "90%", md1: "92%", lg2: "90%" }}
                 minW={240}
                 opacity={0.9}
-                order={{ base: 3, lg4: 5 }}
+                order={{ base: 3, lg2: 5 }}
               >
                 {cityCurrent.forecast && (
                   <Flex
@@ -491,7 +490,7 @@ export const Home = () => {
                     <Text
                       color={"white"}
                       fontWeight={500}
-                      fontSize={{ base: "22px", lg4: "20px", xl: "22px" }}
+                      fontSize={{ base: "22px", lg2: "20px", xl: "22px" }}
                     >
                       Nascer e pôr do sol
                     </Text>
@@ -511,7 +510,8 @@ export const Home = () => {
                           <ArrowUpIcon boxSize={"20px"} color={"white"} />
                         </Center>
                       </Center>
-                      <Text color={"white"} fontWeight={500}>
+
+                      <Text color={"white"} fontWeight={500} minW={"70px"}>
                         {cityCurrent.forecast?.forecastday[0].astro.sunrise}
                       </Text>
                     </HStack>
@@ -531,7 +531,7 @@ export const Home = () => {
                           <ArrowDownIcon boxSize={"20px"} color={"white"} />
                         </Center>
                       </Center>
-                      <Text color={"white"} fontWeight={500}>
+                      <Text color={"white"} fontWeight={500} minW={"70px"}>
                         {cityCurrent.forecast?.forecastday[0].astro.sunset}
                       </Text>
                     </HStack>

@@ -29,7 +29,7 @@ const Header = () => {
       maxW={1520}
       margin={"0 auto"}
       borderBottom={"2px solid"}
-      borderColor={"grey.6"}
+      borderColor={"grey.5"}
     >
       <Flex
         h={"100%"}
