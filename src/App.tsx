@@ -1,3 +1,10 @@
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/lexend/400.css";
+import "@fontsource/lexend/500.css";
+import "@fontsource/lexend/600.css";
+
 import { ChakraProvider, Flex } from "@chakra-ui/react";
 import { AuthProvider } from "./context/webContext";
 import custonTheme from "./styles/theme";

@@ -143,7 +143,13 @@ export const Home = () => {
                 rowSpan={2}
                 colSpan={1}
                 hBig={460}
-                wBig={{ base: "92%", sm1: "80%", sm2: "70%", sm4: 320 }}
+                wBig={{
+                  base: "100%",
+                  sm: "92%",
+                  sm1: "80%",
+                  sm2: "70%",
+                  sm4: 320,
+                }}
                 hSmall={430}
                 wSmall={"90%"}
                 opacity={0.9}
@@ -169,11 +175,21 @@ export const Home = () => {
                         justifyContent={"space-around"}
                         alignItems={"center"}
                       >
-                        <Text color={"white"} w={"35px"}>
+                        <Text
+                          color={"white"}
+                          w={"35px"}
+                          fontWeight={500}
+                          fontFamily={"lexend"}
+                        >
                           {day.slice(0, 3)}
                         </Text>
                         <Image src={elem.day.condition.icon} boxSize={45} />
-                        <Text color={"white"} w={90}>
+                        <Text
+                          color={"white"}
+                          w={100}
+                          fontWeight={500}
+                          fontFamily={"lexend"}
+                        >
                           {elem.day.maxtemp_c + "°"} /{" "}
                           {elem.day.mintemp_c + "°"}
                         </Text>
@@ -202,7 +218,12 @@ export const Home = () => {
               >
                 <Flex flexDir={"column"} alignItems={"center"}>
                   {cityCurrent.forecast && (
-                    <Text color={"white"} fontSize={"32px"} fontWeight={500}>
+                    <Text
+                      color={"white"}
+                      fontSize={"32px"}
+                      fontWeight={400}
+                      fontFamily={"lexend"}
+                    >
                       {cityCurrent.forecast?.forecastday[0].day.avgtemp_c + "°"}
                     </Text>
                   )}
@@ -226,8 +247,9 @@ export const Home = () => {
                       position={"absolute"}
                       bottom={0}
                       color={"white"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       fontWeight={400}
+                      fontFamily={"lexend"}
                     >
                       {cityCurrent.forecast?.forecastday[0].day.maxwind_kph +
                         "kph"}
@@ -256,7 +278,12 @@ export const Home = () => {
                     h={"100%"}
                     w={"97%"}
                   >
-                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                    <Text
+                      color={"white"}
+                      fontSize={"20px"}
+                      fontWeight={400}
+                      fontFamily={"lexend"}
+                    >
                       Condição climática:{" "}
                       <Text
                         as={"span"}
@@ -267,7 +294,12 @@ export const Home = () => {
                         {weatherCondition}
                       </Text>
                     </Text>
-                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                    <Text
+                      color={"white"}
+                      fontSize={"20px"}
+                      fontWeight={400}
+                      fontFamily={"lexend"}
+                    >
                       Umidade:{" "}
                       <Text
                         as={"span"}
@@ -278,7 +310,12 @@ export const Home = () => {
                         {cityCurrent.current?.humidity + "%"}
                       </Text>
                     </Text>
-                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                    <Text
+                      color={"white"}
+                      fontSize={"20px"}
+                      fontWeight={400}
+                      fontFamily={"lexend"}
+                    >
                       Chance de chover:{" "}
                       <Text
                         as={"span"}
@@ -290,7 +327,12 @@ export const Home = () => {
                           .daily_chance_of_rain + "%"}
                       </Text>
                     </Text>
-                    <Text color={"white"} fontSize={"22px"} fontWeight={500}>
+                    <Text
+                      color={"white"}
+                      fontSize={"20px"}
+                      fontWeight={400}
+                      fontFamily={"lexend"}
+                    >
                       Chance de nevar:{" "}
                       <Text
                         as={"span"}
@@ -361,6 +403,7 @@ export const Home = () => {
                             lg2: "15%",
                             xl: "14%",
                             xl1: "12.5%",
+                            xl2: "11%",
                           }}
                           h={"100%"}
                           borderRight={
@@ -373,7 +416,8 @@ export const Home = () => {
                               alignItems={"center"}
                               h={"33%"}
                               color={"white"}
-                              fontWeight={500}
+                              fontWeight={400}
+                              fontFamily={"lexend"}
                             >
                               Agora
                             </Text>
@@ -383,7 +427,8 @@ export const Home = () => {
                               alignItems={"center"}
                               h={"33%"}
                               color={"white"}
-                              fontWeight={500}
+                              fontWeight={400}
+                              fontFamily={"lexend"}
                             >
                               {elem.time.slice(11, 13) + "hrs"}
                             </Text>
@@ -393,8 +438,9 @@ export const Home = () => {
                             alignItems={"center"}
                             h={"33%"}
                             color={"white"}
-                            fontWeight={500}
-                            fontSize={"22px"}
+                            fontSize={"20px"}
+                            fontWeight={400}
+                            fontFamily={"lexend"}
                           >
                             {elem.temp_c + "°"}
                           </Text>
@@ -442,7 +488,8 @@ export const Home = () => {
                             alignItems={"center"}
                             h={"33%"}
                             color={"white"}
-                            fontWeight={500}
+                            fontWeight={400}
+                            fontFamily={"lexend"}
                           >
                             {elem.time.slice(11, 13) + "hrs"}
                           </Text>
@@ -451,8 +498,9 @@ export const Home = () => {
                             alignItems={"center"}
                             h={"33%"}
                             color={"white"}
-                            fontWeight={500}
-                            fontSize={"22px"}
+                            fontSize={"20px"}
+                            fontWeight={400}
+                            fontFamily={"lexend"}
                           >
                             {elem.temp_c + "°"}
                           </Text>
@@ -490,7 +538,8 @@ export const Home = () => {
                     <Text
                       color={"white"}
                       fontWeight={500}
-                      fontSize={{ base: "22px", lg2: "20px", xl: "22px" }}
+                      fontFamily={"lexend"}
+                      fontSize={{ base: "22px", lg2: "20px", xl: "21px" }}
                     >
                       Nascer e pôr do sol
                     </Text>
@@ -511,7 +560,12 @@ export const Home = () => {
                         </Center>
                       </Center>
 
-                      <Text color={"white"} fontWeight={500} minW={"70px"}>
+                      <Text
+                        color={"white"}
+                        minW={"70px"}
+                        fontWeight={400}
+                        fontFamily={"lexend"}
+                      >
                         {cityCurrent.forecast?.forecastday[0].astro.sunrise}
                       </Text>
                     </HStack>
@@ -531,7 +585,12 @@ export const Home = () => {
                           <ArrowDownIcon boxSize={"20px"} color={"white"} />
                         </Center>
                       </Center>
-                      <Text color={"white"} fontWeight={500} minW={"70px"}>
+                      <Text
+                        color={"white"}
+                        minW={"70px"}
+                        fontWeight={400}
+                        fontFamily={"lexend"}
+                      >
                         {cityCurrent.forecast?.forecastday[0].astro.sunset}
                       </Text>
                     </HStack>
