@@ -483,7 +483,17 @@ export const Home = () => {
                             xl2: "11%",
                           }}
                           h={"100%"}
-                          borderRight={"1px solid grey"}
+                          borderRight={
+                            (count === 1 && i < 7) ||
+                            (count === 2 && i < 6) ||
+                            (count === 3 && i < 5) ||
+                            (count === 4 && i < 4) ||
+                            (count === 5 && i < 3) ||
+                            (count === 6 && i < 2) ||
+                            (count === 7 && i < 1)
+                              ? "1px solid grey"
+                              : 0
+                          }
                         >
                           <Text
                             display={"flex"}
