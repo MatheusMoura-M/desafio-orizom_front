@@ -1,11 +1,23 @@
 import { createContext, useContext, useState } from "react";
-import { iGetCityByName, iProviderProps, iSearchCity } from "../interface";
+import {
+  iGetCityByName,
+  iGetListOfWeatherCondition,
+  iProviderProps,
+  iSearchCity,
+} from "../interface";
 import axios from "axios";
 import { api } from "../services/api";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export interface iAuthProviderData {
   getCityByName: (name: iSearchCity) => Promise<void>;
-  value: iGetCityByName;
+  cityCurrent: iGetCityByName;
+  getListOfWeatherCondition: () => Promise<void>;
+  listWeatherConditions: string[];
+  navigate: NavigateFunction;
+  weatherCondition: string;
+  clearData: () => Promise<void>;
 }
 
 export const AuthContext = createContext<iAuthProviderData>(
@@ -13,14 +25,42 @@ export const AuthContext = createContext<iAuthProviderData>(
 );
 
 export const AuthProvider = ({ children }: iProviderProps) => {
-  const [value, setValue] = useState({} as iGetCityByName);
+  const [cityCurrent, setCityCurrent] = useState({} as iGetCityByName);
+  const [weatherCondition, setWeatherCondition] = useState<string>("");
+  const [listWeatherConditions, setListWeatherConditions] = useState(
+    [] as string[]
+  );
+
+  const navigate = useNavigate();
 
   const getCityByName = async ({ city }: iSearchCity) => {
     try {
-      console.log(city);
       const resp = await api.get(`/city/${city}`);
 
-      setValue(resp.data);
+      setCityCurrent(resp.data);
+      setWeatherCondition(resp.data.current?.condition.text);
+      navigate(`/${resp.data.location.name.replaceAll(" ", "-")}`);
+    } catch (error) {
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        error.response?.data.error.message === "No matching location found." &&
+          toast.error("Nenhum local correspondente encontrado", {
+            autoClose: 1500,
+          });
+      }
+    }
+  };
+
+  const getListOfWeatherCondition = async () => {
+    try {
+      const resp = await api.get("/weatherConditions");
+
+      const arrayOfAllWeatherConditions: string[] = resp.data.map(
+        (elem: iGetListOfWeatherCondition) => {
+          return elem.weather_condition_day;
+        }
+      );
+      setListWeatherConditions(arrayOfAllWeatherConditions);
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
@@ -29,11 +69,21 @@ export const AuthProvider = ({ children }: iProviderProps) => {
     }
   };
 
+  const clearData = async () => {
+    setCityCurrent({} as iGetCityByName);
+    setWeatherCondition("");
+  };
+
   return (
     <AuthContext.Provider
       value={{
         getCityByName,
-        value,
+        cityCurrent,
+        getListOfWeatherCondition,
+        listWeatherConditions,
+        navigate,
+        weatherCondition,
+        clearData,
       }}
     >
       {children}

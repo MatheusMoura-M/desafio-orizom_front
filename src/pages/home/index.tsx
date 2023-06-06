@@ -1,5 +1,4 @@
 import {
-  Box,
   Center,
   Flex,
   Grid,
@@ -9,23 +8,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Header from "../../components/NavBar";
-import Chuva from "../../assets/movies/chovisco.mp4";
-import Ensolarado from "../../assets/movies/ceu-limpo.mp4";
-import Granizo from "../../assets/movies/granizo.mp4";
-import Chuva_pesada from "../../assets/movies/chuva_pesada.mp4";
-import Neve_pesada from "../../assets/movies/neve_pesada.mp4";
-import Trovoada from "../../assets/movies/trovoada.mp4";
-import Nevasca from "../../assets/movies/nevasca.mp4";
-import Nublado from "../../assets/movies/nublado.mp4";
-import Nevoa from "../../assets/movies/nevoa.mp4";
 import { useAuth } from "../../context/webContext";
 import CardWeather from "../../components/Cards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
+import { useEffect } from "react";
+import { handleMovieCurrent } from "../../utils/weatherConditionMovie";
 
 export const Home = () => {
-  const { value } = useAuth();
+  const { cityCurrent, getListOfWeatherCondition, weatherCondition } =
+    useAuth();
 
   const weekDays = [
     "Segunda",
@@ -36,39 +29,31 @@ export const Home = () => {
     "Sabádo",
     "Domingo",
   ];
-  const newDate = new Date(value.forecast?.forecastday[0].date);
+
+  const newDate = new Date(cityCurrent.forecast?.forecastday[0].date);
   const dayNumber = newDate.getDay();
   const monthNumber = newDate.getMonth() + 1;
-  const lastUpdateTime = parseInt(value.current?.last_updated.slice(11, 13));
+  const lastUpdateTime = parseInt(
+    cityCurrent.current?.last_updated.slice(11, 13)
+  );
   const day = weekDays[dayNumber];
   let count = 0;
 
-  const weatherCondition = value.current?.condition.text;
-  const weatherConditionFormated =
-    weatherCondition?.split(" ")[0] === "Possibilidade" &&
-    weatherCondition?.replace("Possibilidade", "Possib.");
+  useEffect(() => {
+    getListOfWeatherCondition();
+  }, []);
 
-  const MovieCurrent =
-    weatherCondition == "Céu limpo"
-      ? Ensolarado
-      : weatherCondition == "Parcialmente nublado"
-      ? Nublado
-      : weatherCondition == "Neblina"
-      ? Nevoa
-      : Trovoada;
-
-  console.log(value);
   return (
     <>
       <Header />
       <Flex
         justifyContent="center"
         flexDir="column"
-        maxW="1520px"
+        maxW={1520}
         margin={"0 auto"}
         h={"100%"}
         minH={"90vh"}
-        maxH={"100vh"}
+        maxH={{ base: "unset", lg4: "100vh" }}
         bg={"rgb(17,77,103)"}
         bgGradient={
           "linear-gradient(90deg, rgba(17,77,103,1) 18%, rgba(30,87,176,1) 58%, rgba(54,170,177,1) 98%)"
@@ -76,7 +61,7 @@ export const Home = () => {
       >
         <Flex
           minH={"90vh"}
-          maxH={"100vh"}
+          maxH={{ base: "unset", lg4: "100vh" }}
           alignItems={"center"}
           justifyContent={"center"}
         >
@@ -86,21 +71,21 @@ export const Home = () => {
             justifyContent={"center"}
             position={"relative"}
             minH={"90vh"}
-            maxH={"100vh"}
+            maxH={{ base: "unset", lg4: "100vh" }}
             flexDir={"column"}
           >
             <Flex
               as={"video"}
-              src={MovieCurrent}
+              src={handleMovieCurrent()}
               minH={"90vh"}
-              maxH={"100vh"}
+              maxH={{ base: "unset", lg4: "100vh" }}
               h={"100%"}
               autoPlay
               muted
               loop
               objectFit={"cover"}
               position={"absolute"}
-              opacity={0.5}
+              opacity={0.6}
               w={"100%"}
               flexDir={"column"}
               alignItems={"center"}
@@ -108,36 +93,50 @@ export const Home = () => {
             />
             <HStack
               h={100}
-              w={"60%"}
+              w={{ base: "90%", lg: "99%" }}
+              m={"0 auto"}
               pl={5}
               alignItems={"center"}
-              justifyContent={"space-between"}
+              justifyContent={"flex-start"}
             >
-              {value.location?.name && (
+              {cityCurrent.location?.name && (
                 <Text
-                  align={"center"}
+                  w={"100%"}
+                  align={"start"}
                   color={"white"}
                   fontSize={"24px"}
                   fontWeight={500}
+                  zIndex={1}
                 >
                   Previsão de hoje (
-                  {value.forecast?.forecastday[0].date.slice(8)}/
+                  {cityCurrent.forecast?.forecastday[0].date.slice(8)}/
                   {monthNumber < 10 ? 0 + monthNumber.toString() : monthNumber})
                   &nbsp;
-                  {value.location?.name}
+                  {cityCurrent.location?.name}
                   &nbsp;
                   <FontAwesomeIcon icon={faLocationDot} size="1x" />
                 </Text>
               )}
             </HStack>
             <Grid
-              templateRows="repeat(2, 240px)"
-              templateColumns="repeat(5, 1fr)"
-              w={"97%"}
-              minW={"95%"}
+              templateRows={{
+                base: "repeat(5, 240px)",
+                sm4: "repeat(4, 240px)",
+                lg: "repeat(3, 240px)",
+                lg4: "repeat(2, 240px)",
+              }}
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                sm4: "repeat(2, 1fr)",
+                lg: "repeat(3, 1fr)",
+                lg4: "repeat(5, 1fr)",
+              }}
+              w={{ base: "85%", lg: "97%", lg4: "97%" }}
+              minW={{ base: "83%", lg: "95%", lg4: "95%" }}
               m={"0 auto"}
-              minH={"76vh"}
-              maxH={"650px"}
+              mb={{ base: 50, sm4: 0 }}
+              minH={"74vh"}
+              maxH={{ base: "unset", lg4: 479 }}
               flexDir={"row"}
               gap={"1rem"}
               alignItems={"flex-start"}
@@ -146,11 +145,13 @@ export const Home = () => {
               <CardWeather
                 rowSpan={2}
                 colSpan={1}
-                heightBig={460}
-                widthBig={320}
-                heightSmall={430}
-                widthSmall={290}
+                hBig={460}
+                wBig={{ base: "92%", sm1: "80%", xsm3: "70%", sm4: 320 }}
+                hSmall={430}
+                wSmall={"90%"}
                 opacity={0.9}
+                order={1}
+                margin={"0 auto"}
               >
                 <VStack
                   spacing={4}
@@ -158,7 +159,7 @@ export const Home = () => {
                   h={"100%"}
                   justifyContent={"center"}
                 >
-                  {value.forecast?.forecastday.map((elem) => {
+                  {cityCurrent.forecast?.forecastday.map((elem) => {
                     const newDate = new Date(elem.date);
                     const dayNumber = newDate.getDay();
                     const day = weekDays[dayNumber];
@@ -188,16 +189,25 @@ export const Home = () => {
 
               <CardWeather
                 rowSpan={1}
-                colSpan={2}
-                heightBig={200}
-                heightSmall={170}
-                widthSmall={"95%"}
+                colSpan={{ base: 1, lg4: 2 }}
+                hBig={200}
+                hSmall={170}
+                wSmall={{ base: "92%", sm4: "90%", md1: "92%", lg4: "94%" }}
+                minW={{ sm4: "100%", md: "unset" }}
                 opacity={0.9}
+                order={2}
+                gap={{
+                  base: "1rem",
+                  sm4: 0,
+                  md: "1rem",
+                  lg3: "2rem",
+                  lg4: "4rem",
+                }}
               >
                 <Flex flexDir={"column"} alignItems={"center"}>
-                  {value.forecast && (
+                  {cityCurrent.forecast && (
                     <Text color={"white"} fontSize={"32px"} fontWeight={500}>
-                      {value.forecast?.forecastday[0].day.avgtemp_c + "°"}
+                      {cityCurrent.forecast?.forecastday[0].day.avgtemp_c + "°"}
                     </Text>
                   )}
                   <Text color={"white"} fontSize={"32px"} fontWeight={500}>
@@ -212,10 +222,10 @@ export const Home = () => {
                   h={115}
                 >
                   <Image
-                    src={value.current?.condition.icon}
-                    boxSize={value.current?.condition.icon && 100}
+                    src={cityCurrent.current?.condition.icon}
+                    boxSize={cityCurrent.current?.condition.icon && 100}
                   />
-                  {value.forecast?.forecastday[0].day.maxwind_kph && (
+                  {cityCurrent.forecast?.forecastday[0].day.maxwind_kph && (
                     <Text
                       position={"absolute"}
                       bottom={0}
@@ -223,7 +233,8 @@ export const Home = () => {
                       fontSize={"16px"}
                       fontWeight={400}
                     >
-                      {value.forecast?.forecastday[0].day.maxwind_kph + "kph"}
+                      {cityCurrent.forecast?.forecastday[0].day.maxwind_kph +
+                        "kph"}
                     </Text>
                   )}
                 </Flex>
@@ -231,15 +242,19 @@ export const Home = () => {
 
               <CardWeather
                 rowSpan={1}
-                colSpan={2}
-                heightBig={200}
-                heightSmall={170}
-                widthSmall={"95%"}
+                colSpan={{ base: 1, sm4: 2 }}
+                hBig={200}
+                hSmall={170}
+                wSmall={"95%"}
                 opacity={0.9}
+                order={{ base: 4, lg4: 3 }}
               >
-                {value.forecast && (
+                {cityCurrent.forecast && (
                   <VStack
-                    spacing={1.5}
+                    spacing={{
+                      base: 1,
+                      lg4: weatherCondition.length > 18 ? 0 : 1.5,
+                    }}
                     alignItems={"flex-start"}
                     justifyContent={"center"}
                     h={"100%"}
@@ -252,9 +267,8 @@ export const Home = () => {
                         color={"#62b5ff"}
                         display={"inline-block"}
                         fontSize={"20px"}
-                        letterSpacing={"-0.5px"}
                       >
-                        {weatherConditionFormated}
+                        {weatherCondition}
                       </Text>
                     </Text>
                     <Text color={"white"} fontSize={"22px"} fontWeight={500}>
@@ -265,7 +279,7 @@ export const Home = () => {
                         display={"inline-block"}
                         fontSize={"20px"}
                       >
-                        {value.current?.humidity + "%"}
+                        {cityCurrent.current?.humidity + "%"}
                       </Text>
                     </Text>
                     <Text color={"white"} fontSize={"22px"} fontWeight={500}>
@@ -276,7 +290,7 @@ export const Home = () => {
                         display={"inline-block"}
                         fontSize={"20px"}
                       >
-                        {value.forecast?.forecastday[0].day
+                        {cityCurrent.forecast?.forecastday[0].day
                           .daily_chance_of_rain + "%"}
                       </Text>
                     </Text>
@@ -288,7 +302,7 @@ export const Home = () => {
                         display={"inline-block"}
                         fontSize={"20px"}
                       >
-                        {value.forecast?.forecastday[0].day
+                        {cityCurrent.forecast?.forecastday[0].day
                           .daily_chance_of_snow + "%"}
                       </Text>
                     </Text>
@@ -298,28 +312,61 @@ export const Home = () => {
 
               <CardWeather
                 rowSpan={1}
-                colSpan={3}
-                heightBig={200}
-                heightSmall={170}
-                widthSmall={"95%"}
+                colSpan={{ base: 1, sm4: 2, lg: 3 }}
+                hBig={200}
+                hSmall={170}
+                wSmall={"95%"}
+                minW={{ base: "100%", sm4: "unset" }}
+                maxW={{ base: 601, sm4: "unset" }}
                 opacity={0.9}
+                order={{ base: 5, lg4: 4 }}
               >
                 <HStack
+                  as={"ul"}
                   alignItems={"center"}
-                  justifyContent={"center"}
-                  w={"100%"}
+                  justifyContent={"flex-start"}
+                  w={"99%"}
                   h={"100%"}
+                  gap={0}
+                  overflowX={"auto"}
+                  sx={{
+                    "::-webkit-scrollbar": {
+                      w: "10px",
+                      h: "9px",
+                    },
+                    "::-webkit-scrollbar-track": {
+                      bg: "#4a91b3",
+                      borderRadius: "10px",
+                      w: "10px",
+                    },
+                    "::-webkit-scrollbar-thumb": {
+                      bg: "#204e64",
+                      borderRadius: "24px",
+                    },
+                  }}
                 >
-                  {value.forecast?.forecastday[0].hour.map((elem, i) => {
-                    if (i >= lastUpdateTime && i <= lastUpdateTime + 5) {
+                  {cityCurrent.forecast?.forecastday[0].hour.map((elem, i) => {
+                    if (i >= lastUpdateTime && i <= lastUpdateTime + 8) {
                       count += 1;
                       return (
                         <VStack
+                          as={"li"}
                           key={elem.time}
                           alignItems={"center"}
                           justifyContent={"center"}
-                          w={"18%"}
+                          minW={{
+                            base: "25.5%",
+                            sm: "20.5%",
+                            xsm3: "17.5%",
+                            sm4: "14.5%",
+                            md2: "13.5%",
+                            lg: "12.5%",
+                            lg4: "15%",
+                            xl: "14%",
+                            xl1: "12.5%",
+                          }}
                           h={"100%"}
+                          borderRight={"1px solid grey"}
                         >
                           {i === lastUpdateTime ? (
                             <Text
@@ -361,21 +408,35 @@ export const Home = () => {
                       );
                     }
                   })}
-                  {value.forecast?.forecastday[0].hour.map((elem, i) => {
+                  {cityCurrent.forecast?.forecastday[0].hour.map((elem, i) => {
                     if (
-                      (count === 1 && i < 5) ||
-                      (count === 2 && i < 4) ||
-                      (count === 3 && i < 3) ||
-                      (count === 4 && i < 2) ||
-                      (count === 5 && i < 1)
+                      (count === 1 && i < 7) ||
+                      (count === 2 && i < 6) ||
+                      (count === 3 && i < 5) ||
+                      (count === 4 && i < 4) ||
+                      (count === 5 && i < 3) ||
+                      (count === 6 && i < 2) ||
+                      (count === 7 && i < 1)
                     ) {
                       return (
                         <VStack
+                          as={"li"}
                           key={elem.time}
                           alignItems={"center"}
                           justifyContent={"center"}
-                          w={"18%"}
+                          minW={{
+                            base: "25.5%",
+                            sm: "20.5%",
+                            xsm3: "17.5%",
+                            sm4: "14.5%",
+                            md2: "13.5%",
+                            lg: "12.5%",
+                            lg4: "15%",
+                            xl: "14%",
+                            xl1: "12.5%",
+                          }}
                           h={"100%"}
+                          borderRight={"1px solid grey"}
                         >
                           <Text
                             display={"flex"}
@@ -411,13 +472,14 @@ export const Home = () => {
               <CardWeather
                 rowSpan={1}
                 colSpan={1}
-                heightBig={200}
-                widthBig={300}
-                heightSmall={170}
-                widthSmall={270}
+                hBig={200}
+                hSmall={170}
+                wSmall={{ base: "92%", sm4: "90%", md1: "92%", lg4: "90%" }}
+                minW={240}
                 opacity={0.9}
+                order={{ base: 3, lg4: 5 }}
               >
-                {value.forecast && (
+                {cityCurrent.forecast && (
                   <Flex
                     w={"100%"}
                     h={"90%"}
@@ -426,7 +488,11 @@ export const Home = () => {
                     flexDir={"column"}
                     gap={"1rem"}
                   >
-                    <Text color={"white"} fontWeight={500} fontSize={"22px"}>
+                    <Text
+                      color={"white"}
+                      fontWeight={500}
+                      fontSize={{ base: "22px", lg4: "20px", xl: "22px" }}
+                    >
                       Nascer e pôr do sol
                     </Text>
                     <HStack spacing={5}>
@@ -446,7 +512,7 @@ export const Home = () => {
                         </Center>
                       </Center>
                       <Text color={"white"} fontWeight={500}>
-                        {value.forecast?.forecastday[0].astro.sunrise}
+                        {cityCurrent.forecast?.forecastday[0].astro.sunrise}
                       </Text>
                     </HStack>
                     <HStack spacing={5}>
@@ -466,7 +532,7 @@ export const Home = () => {
                         </Center>
                       </Center>
                       <Text color={"white"} fontWeight={500}>
-                        {value.forecast?.forecastday[0].astro.sunset}
+                        {cityCurrent.forecast?.forecastday[0].astro.sunset}
                       </Text>
                     </HStack>
                   </Flex>

@@ -11,19 +11,19 @@ const breakpoints = {
   xsm2: "33.76em", // 540px
   xsm3: "35.625em", // 570px
   sm2: "40em", // 640px
-  sm3: "43.55em", // 697px
+  sm3: "40.625em", // 650px
   sm4: "45em", // 720px
   md: "48em", // 768px
   md1: "50em", // 800px
   md2: "55em", // 880px
   md3: "59.375em", // 950px
-  lg: "62em", // 992px
+  lg: "61.25em", // 980px
   lg2: "64.37em", // 1030px
   lg2m: "69.375em", // 1110px
-  lg3: "72em", // 1152px
+  lg3: "70.9375em", // 1135px
   lg4: "75em", // 1200px
-  xl: "80em", // 1280px
-  xl1: "84.37em", // 1350px
+  xl: "78.125em", // 1250px
+  xl1: "80em", // 1280px
   xl2: "88em", // 1408px
   xl2m: "90.625em", // 1450px
   xl3: "96em", // 1536px
