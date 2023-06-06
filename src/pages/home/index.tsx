@@ -455,13 +455,14 @@ export const Home = () => {
                   })}
                   {cityCurrent.forecast?.forecastday[0].hour.map((elem, i) => {
                     if (
-                      (count === 1 && i < 7) ||
-                      (count === 2 && i < 6) ||
-                      (count === 3 && i < 5) ||
-                      (count === 4 && i < 4) ||
-                      (count === 5 && i < 3) ||
-                      (count === 6 && i < 2) ||
-                      (count === 7 && i < 1)
+                      (count === 1 && i < 8) ||
+                      (count === 2 && i < 7) ||
+                      (count === 3 && i < 6) ||
+                      (count === 4 && i < 5) ||
+                      (count === 5 && i < 4) ||
+                      (count === 6 && i < 3) ||
+                      (count === 7 && i < 2) ||
+                      (count === 8 && i < 1)
                     ) {
                       return (
                         <VStack
@@ -479,6 +480,7 @@ export const Home = () => {
                             lg2: "15%",
                             xl: "14%",
                             xl1: "12.5%",
+                            xl2: "11%",
                           }}
                           h={"100%"}
                           borderRight={"1px solid grey"}
