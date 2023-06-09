@@ -3,17 +3,6 @@
 ## 📕 Sobre / About
 
 Your Climate é uma projeto onde você pode pesquisar sobre o clima de locais diversos, podendo pesquisar por nome da cidade, latitude e longitude, dentre outros.
-Nele, você encontra informações como :
-- Velocidade do vento
-- Temperatura máxima e mínima dos próximos 5 dias
-- Temperatura das próximas 8 horas
-- Condição climática
-- Umidade
-- Chance de chover
-- Chance de nevar
-- Hórario previsto para o nascer e pôr do sol
-- Temperaturas em Celsius e Fahrenheit
-
 
 ## 🔧 Ferramentas / Tools
 
@@ -56,8 +45,3 @@ ou
 ```
   yarn dev
 ```
-
-
-## Back End
-
-[Link](https://github.com/MatheusMoura-M/desafio-orizom_back)
