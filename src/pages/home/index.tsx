@@ -1,13 +1,4 @@
-import {
-  Button,
-  Center,
-  Flex,
-  Grid,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Flex, Grid, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import Header from "../../components/NavBar";
 import { useAuth } from "../../context/webContext";
 import CardWeather from "../../components/Cards";
@@ -248,12 +239,12 @@ export const Home = () => {
                           fontFamily={"lexend"}
                         >
                           {activeTemp === "ºC"
-                            ? elem.day.maxtemp_c + "°"
-                            : elem.day.maxtemp_f + "°"}{" "}
+                            ? elem.day.mintemp_c + "°"
+                            : elem.day.mintemp_f + "°"}{" "}
                           /{" "}
                           {activeTemp === "ºC"
-                            ? elem.day.mintemp_c + "°"
-                            : elem.day.mintemp_f + "°"}
+                            ? elem.day.maxtemp_c + "°"
+                            : elem.day.maxtemp_f + "°"}
                         </Text>
                       </Flex>
                     );
