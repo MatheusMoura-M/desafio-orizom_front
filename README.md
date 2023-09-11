@@ -46,6 +46,6 @@ ou
   yarn dev
 ```
 
-## Front End
+## Back End
 
 [Link](https://github.com/MatheusMoura-M/desafio-orizom_back)
